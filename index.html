@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume Maker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* Global Styles */
         * {
@@ -230,6 +230,19 @@
             margin-bottom: 20px;
         }
         
+        /* Template 1: Classic */
+        .template-classic .resume {
+            font-family: 'Times New Roman', serif;
+            padding: 40px;
+        }
+        
+        .template-classic .resume h1 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        /* Template 2: Modern */
         .template-modern .resume {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -240,9 +253,166 @@
             letter-spacing: 2px;
         }
         
-        .template-classic .resume h1 {
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
+        .template-modern .section h2 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        /* Template 3: Minimal */
+        .template-minimal .resume {
+            font-family: 'Arial', sans-serif;
+            padding: 35px;
+            line-height: 1.4;
+        }
+        
+        .template-minimal .resume h1 {
+            font-weight: 300;
+            font-size: 32px;
+        }
+        
+        .template-minimal .section h2 {
+            font-weight: 400;
+            border-bottom: 1px solid #ddd;
+            color: #555;
+        }
+        
+        /* Template 4: Professional */
+        .template-professional .resume {
+            font-family: 'Georgia', serif;
+            padding: 40px;
+            border: 1px solid #ccc;
+        }
+        
+        .template-professional .resume h1 {
+            color: #2c3e50;
+            font-size: 30px;
+        }
+        
+        .template-professional .contact-info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+        
+        .template-professional .section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e67e22;
+        }
+        
+        /* Template 5: Creative */
+        .template-creative .resume {
+            font-family: 'Trebuchet MS', sans-serif;
+            padding: 30px;
+            background-color: #fff;
+            color: #333;
+        }
+        
+        .template-creative .resume h1 {
+            color: #e74c3c;
+            font-weight: 700;
+        }
+        
+        .template-creative .section h2 {
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            border-bottom: none;
+            padding-left: 10px;
+        }
+        
+        /* Template 6: Corporate */
+        .template-corporate .resume {
+            font-family: 'Calibri', sans-serif;
+            padding: 35px;
+        }
+        
+        .template-corporate .resume h1 {
+            color: #2980b9;
+            border-bottom: 3px solid #2980b9;
+        }
+        
+        .template-corporate .section h2 {
+            background-color: #f8f9fa;
+            padding: 5px 10px;
+            border-left: 4px solid #2980b9;
+            border-bottom: none;
+        }
+        
+        /* Template 7: Simple */
+        .template-simple .resume {
+            font-family: 'Arial', sans-serif;
+            padding: 30px;
+            line-height: 1.5;
+        }
+        
+        .template-simple .resume h1 {
+            font-weight: normal;
+            color: #333;
+            border-bottom: 1px dotted #ccc;
+        }
+        
+        .template-simple .section h2 {
+            font-weight: normal;
+            color: #555;
+            border-bottom: 1px dotted #ccc;
+        }
+        
+        /* Template 8: Elegant */
+        .template-elegant .resume {
+            font-family: 'Garamond', serif;
+            padding: 40px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .template-elegant .resume h1 {
+            font-size: 32px;
+            color: #16a085;
+        }
+        
+        .template-elegant .section h2 {
+            color: #16a085;
+            border-bottom: 1px solid #16a085;
+        }
+        
+        /* Template 9: Technical */
+        .template-technical .resume {
+            font-family: 'Consolas', monospace;
+            padding: 30px;
+            border: 1px solid #ddd;
+        }
+        
+        .template-technical .resume h1 {
+            color: #27ae60;
+        }
+        
+        .template-technical .section h2 {
+            color: #27ae60;
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0;
+        }
+        
+        .template-technical .skills-list .skill-item {
+            background: #eafaf1;
+            border: 1px solid #d5f5e3;
+            color: #27ae60;
+        }
+        
+        /* Template 10: Bold */
+        .template-bold .resume {
+            font-family: 'Impact', sans-serif;
+            padding: 30px;
+        }
+        
+        .template-bold .resume h1 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8e44ad;
+        }
+        
+        .template-bold .section h2 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid #8e44ad;
+            color: #8e44ad;
         }
         
         /* Print styles */
@@ -279,10 +449,18 @@
                     <option value="classic">Classic</option>
                     <option value="modern">Modern</option>
                     <option value="minimal">Minimal</option>
+                    <option value="professional">Professional</option>
+                    <option value="creative">Creative</option>
+                    <option value="corporate">Corporate</option>
+                    <option value="simple">Simple</option>
+                    <option value="elegant">Elegant</option>
+                    <option value="technical">Technical</option>
+                    <option value="bold">Bold</option>
                 </select>
             </div>
             <div class="btn-group">
                 <button id="printBtn" class="btn">Print Resume</button>
+                <button id="downloadPdfBtn" class="btn">Download PDF</button>
                 <button id="saveBtn" class="btn">Save as PDF</button>
             </div>
         </div>
@@ -406,6 +584,7 @@
             const templateSelect = document.getElementById('template');
             const printBtn = document.getElementById('printBtn');
             const saveBtn = document.getElementById('saveBtn');
+            const downloadPdfBtn = document.getElementById('downloadPdfBtn');
             
             // Preview Elements
             const resumePreview = document.getElementById('resumePreview');
@@ -442,6 +621,7 @@
             // Print and Save
             printBtn.addEventListener('click', printResume);
             saveBtn.addEventListener('click', printResume); // Uses same function as it triggers print dialog
+            downloadPdfBtn.addEventListener('click', downloadPDF); // New PDF download function
             
             // Initial Update
             updatePersonalInfo();
@@ -651,6 +831,35 @@
             
             function printResume() {
                 window.print();
+            }
+            
+            // New function to download the resume as PDF
+            function downloadPDF() {
+                // Clone the resume preview element
+                const resumeElement = document.getElementById('resumePreview');
+                const clonedResume = resumeElement.cloneNode(true);
+                
+                // Create a container with white background
+                const container = document.createElement('div');
+                container.style.background = 'white';
+                container.style.padding = '20px';
+                container.appendChild(clonedResume);
+                
+                // Get the name for the file
+                const name = fullNameInput.value || 'resume';
+                const fileName = `${name.toLowerCase().replace(/\s+/g, '_')}_resume.pdf`;
+                
+                // Configure PDF options
+                const options = {
+                    margin: 10,
+                    filename: fileName,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                // Generate the PDF
+                html2pdf().from(clonedResume).set(options).save();
             }
             
             function addDemoData() {
