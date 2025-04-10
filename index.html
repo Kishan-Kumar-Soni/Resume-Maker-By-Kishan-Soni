@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Maker</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .content-area {
+                flex-direction: row;
+            }
+        }
+        
+        /* Form Styles */
+        .form-container {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        /* Preview Styles */
+        .preview-container {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resume {
+            border: 1px solid #ddd;
+            padding: 30px;
+            height: 100%;
+            min-height: 500px;
+            overflow-y: auto;
+            background-color: white;
+        }
+        
+        .resume h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .resume h2 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #3498db;
+            color: #2c3e50;
+        }
+        
+        .contact-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #7f8c8d;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-item {
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+        
+        .section-subtitle {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        
+        .section-content {
+            margin-top: 5px;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-item {
+            background: #f1f1f1;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .dynamic-list {
+            margin-bottom: 20px;
+        }
+        
+        .list-item {
+            background: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .list-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        /* Template Styles */
+        .template-picker {
+            margin-bottom: 20px;
+        }
+        
+        .template-modern .resume {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .template-modern .resume h1 {
+            color: #3498db;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .template-classic .resume h1 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .resume, .resume * {
+                visibility: visible;
+            }
+            .resume {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                border: none;
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Resume Maker</h1>
+            <p>Create your professional resume in minutes</p>
+        </header>
+
+        <div class="controls">
+            <div class="template-picker">
+                <label for="template">Choose Template:</label>
+                <select id="template">
+                    <option value="classic">Classic</option>
+                    <option value="modern">Modern</option>
+                    <option value="minimal">Minimal</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button id="printBtn" class="btn">Print Resume</button>
+                <button id="saveBtn" class="btn">Save as PDF</button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="form-container">
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" placeholder="Web Developer">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="john.doe@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" placeholder="+1 234 567 890">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="New York, NY">
+                    </div>
+                    <div class="form-group">
+                        <label for="summary">Professional Summary</label>
+                        <textarea id="summary" placeholder="Brief overview of your professional background and key strengths"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Work Experience</h2>
+                    <div id="workExperience" class="dynamic-list">
+                        <!-- Work experiences will be added here -->
+                    </div>
+                    <button id="addWorkBtn" class="btn">Add Work Experience</button>
+                </div>
+
+                <div class="form-section">
+                    <h2>Education</h2>
+                    <div id="education" class="dynamic-list">
+                        <!-- Education items will be added here -->
+                    </div>
+                    <button id="addEducationBtn" class="btn">Add Education</button>
+                </div>
+
+                <div class="form-section">
+                    <h2>Skills</h2>
+                    <div class="form-group">
+                        <input type="text" id="skillInput" placeholder="Add a skill (e.g., JavaScript)">
+                        <div class="btn-group">
+                            <button id="addSkillBtn" class="btn btn-sm">Add Skill</button>
+                        </div>
+                    </div>
+                    <div id="skillsList" class="skills-list">
+                        <!-- Skills will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-container">
+                <h2>Preview</h2>
+                <div id="resumePreview" class="resume">
+                    <h1 id="previewName">Your Name</h1>
+                    <div class="contact-info" id="previewContact">
+                        your.email@example.com | +1 234 567 890 | New York, NY
+                    </div>
+
+                    <div class="section">
+                        <h2>Professional Summary</h2>
+                        <div id="previewSummary" class="section-content">
+                            A brief summary of your professional background and key strengths.
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Work Experience</h2>
+                        <div id="previewWork">
+                            <!-- Work experience items will be added here -->
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Education</h2>
+                        <div id="previewEducation">
+                            <!-- Education items will be added here -->
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Skills</h2>
+                        <div id="previewSkills" class="skills-list">
+                            <!-- Skills will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fullNameInput = document.getElementById('fullName');
+            const jobTitleInput = document.getElementById('jobTitle');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const locationInput = document.getElementById('location');
+            const summaryInput = document.getElementById('summary');
+            const skillInput = document.getElementById('skillInput');
+            const addSkillBtn = document.getElementById('addSkillBtn');
+            const skillsList = document.getElementById('skillsList');
+            const addWorkBtn = document.getElementById('addWorkBtn');
+            const workExperience = document.getElementById('workExperience');
+            const addEducationBtn = document.getElementById('addEducationBtn');
+            const education = document.getElementById('education');
+            const templateSelect = document.getElementById('template');
+            const printBtn = document.getElementById('printBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            
+            // Preview Elements
+            const resumePreview = document.getElementById('resumePreview');
+            const previewName = document.getElementById('previewName');
+            const previewContact = document.getElementById('previewContact');
+            const previewSummary = document.getElementById('previewSummary');
+            const previewWork = document.getElementById('previewWork');
+            const previewEducation = document.getElementById('previewEducation');
+            const previewSkills = document.getElementById('previewSkills');
+            
+            // Event Listeners for Personal Information
+            fullNameInput.addEventListener('input', updatePersonalInfo);
+            jobTitleInput.addEventListener('input', updatePersonalInfo);
+            emailInput.addEventListener('input', updatePersonalInfo);
+            phoneInput.addEventListener('input', updatePersonalInfo);
+            locationInput.addEventListener('input', updatePersonalInfo);
+            summaryInput.addEventListener('input', updatePersonalInfo);
+            
+            // Event Listeners for Skills
+            addSkillBtn.addEventListener('click', addSkill);
+            skillInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addSkill();
+                }
+            });
+            
+            // Event Listeners for Work Experience & Education
+            addWorkBtn.addEventListener('click', () => addWorkExperience());
+            addEducationBtn.addEventListener('click', () => addEducation());
+            
+            // Template Selection
+            templateSelect.addEventListener('change', changeTemplate);
+            
+            // Print and Save
+            printBtn.addEventListener('click', printResume);
+            saveBtn.addEventListener('click', printResume); // Uses same function as it triggers print dialog
+            
+            // Initial Update
+            updatePersonalInfo();
+            changeTemplate();
+            
+            // Add Demo Data
+            addDemoData();
+            
+            // Functions
+            function updatePersonalInfo() {
+                previewName.textContent = fullNameInput.value || 'Your Name';
+                
+                const jobTitle = jobTitleInput.value ? jobTitleInput.value : '';
+                
+                let contactText = [];
+                if (emailInput.value) contactText.push(emailInput.value);
+                if (phoneInput.value) contactText.push(phoneInput.value);
+                if (locationInput.value) contactText.push(locationInput.value);
+                
+                previewContact.textContent = contactText.join(' | ') || 'your.email@example.com | +1 234 567 890 | New York, NY';
+                
+                if (jobTitle) {
+                    previewContact.innerHTML = `<div><strong>${jobTitle}</strong></div>` + previewContact.innerHTML;
+                }
+                
+                previewSummary.textContent = summaryInput.value || 'A brief summary of your professional background and key strengths.';
+            }
+            
+            function addSkill() {
+                if (!skillInput.value.trim()) return;
+                
+                const skill = document.createElement('div');
+                skill.className = 'skill-item';
+                skill.textContent = skillInput.value;
+                skill.addEventListener('click', () => {
+                    skill.remove();
+                    updateSkillsPreview();
+                });
+                
+                skillsList.appendChild(skill);
+                skillInput.value = '';
+                
+                updateSkillsPreview();
+            }
+            
+            function updateSkillsPreview() {
+                previewSkills.innerHTML = '';
+                
+                document.querySelectorAll('#skillsList .skill-item').forEach(skill => {
+                    const previewSkill = document.createElement('div');
+                    previewSkill.className = 'skill-item';
+                    previewSkill.textContent = skill.textContent;
+                    previewSkills.appendChild(previewSkill);
+                });
+            }
+            
+            function addWorkExperience(data = {}) {
+                const workItem = document.createElement('div');
+                workItem.className = 'list-item';
+                workItem.innerHTML = `
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" class="work-title" value="${data.title || ''}" placeholder="Software Developer">
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" class="work-company" value="${data.company || ''}" placeholder="ABC Corporation">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" class="work-location" value="${data.location || ''}" placeholder="New York, NY">
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="text" class="work-start" value="${data.start || ''}" placeholder="Jan 2020">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="text" class="work-end" value="${data.end || ''}" placeholder="Present">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="work-description" placeholder="Describe your responsibilities and achievements">${data.description || ''}</textarea>
+                    </div>
+                    <div class="list-controls">
+                        <button class="btn btn-danger btn-sm remove-work">Remove</button>
+                    </div>
+                `;
+                
+                workItem.querySelector('.remove-work').addEventListener('click', () => {
+                    workItem.remove();
+                    updateWorkPreview();
+                });
+                
+                const inputs = workItem.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', updateWorkPreview);
+                });
+                
+                workExperience.appendChild(workItem);
+                updateWorkPreview();
+            }
+            
+            function updateWorkPreview() {
+                previewWork.innerHTML = '';
+                
+                document.querySelectorAll('#workExperience .list-item').forEach(item => {
+                    const title = item.querySelector('.work-title').value;
+                    const company = item.querySelector('.work-company').value;
+                    const location = item.querySelector('.work-location').value;
+                    const start = item.querySelector('.work-start').value;
+                    const end = item.querySelector('.work-end').value;
+                    const description = item.querySelector('.work-description').value;
+                    
+                    if (!title && !company) return;
+                    
+                    const workPreviewItem = document.createElement('div');
+                    workPreviewItem.className = 'section-item';
+                    workPreviewItem.innerHTML = `
+                        <div class="section-title">
+                            <span>${title || 'Job Title'}</span>
+                            <span>${start || 'Start'} - ${end || 'End'}</span>
+                        </div>
+                        <div class="section-subtitle">${company || 'Company'}${location ? `, ${location}` : ''}</div>
+                        <div class="section-content">${description || 'Job description'}</div>
+                    `;
+                    
+                    previewWork.appendChild(workPreviewItem);
+                });
+            }
+            
+            function addEducation(data = {}) {
+                const educationItem = document.createElement('div');
+                educationItem.className = 'list-item';
+                educationItem.innerHTML = `
+                    <div class="form-group">
+                        <label>Degree</label>
+                        <input type="text" class="edu-degree" value="${data.degree || ''}" placeholder="Bachelor of Science">
+                    </div>
+                    <div class="form-group">
+                        <label>Institution</label>
+                        <input type="text" class="edu-institution" value="${data.institution || ''}" placeholder="University of Example">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" class="edu-location" value="${data.location || ''}" placeholder="New York, NY">
+                    </div>
+                    <div class="form-group">
+                        <label>Graduation Date</label>
+                        <input type="text" class="edu-date" value="${data.date || ''}" placeholder="May 2020">
+                    </div>
+                    <div class="form-group">
+                        <label>Description (Optional)</label>
+                        <textarea class="edu-description" placeholder="Additional information about your education">${data.description || ''}</textarea>
+                    </div>
+                    <div class="list-controls">
+                        <button class="btn btn-danger btn-sm remove-edu">Remove</button>
+                    </div>
+                `;
+                
+                educationItem.querySelector('.remove-edu').addEventListener('click', () => {
+                    educationItem.remove();
+                    updateEducationPreview();
+                });
+                
+                const inputs = educationItem.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', updateEducationPreview);
+                });
+                
+                education.appendChild(educationItem);
+                updateEducationPreview();
+            }
+            
+            function updateEducationPreview() {
+                previewEducation.innerHTML = '';
+                
+                document.querySelectorAll('#education .list-item').forEach(item => {
+                    const degree = item.querySelector('.edu-degree').value;
+                    const institution = item.querySelector('.edu-institution').value;
+                    const location = item.querySelector('.edu-location').value;
+                    const date = item.querySelector('.edu-date').value;
+                    const description = item.querySelector('.edu-description').value;
+                    
+                    if (!degree && !institution) return;
+                    
+                    const eduPreviewItem = document.createElement('div');
+                    eduPreviewItem.className = 'section-item';
+                    eduPreviewItem.innerHTML = `
+                        <div class="section-title">
+                            <span>${degree || 'Degree'}</span>
+                            <span>${date || 'Graduation Date'}</span>
+                        </div>
+                        <div class="section-subtitle">${institution || 'Institution'}${location ? `, ${location}` : ''}</div>
+                        ${description ? `<div class="section-content">${description}</div>` : ''}
+                    `;
+                    
+                    previewEducation.appendChild(eduPreviewItem);
+                });
+            }
+            
+            function changeTemplate() {
+                const template = templateSelect.value;
+                resumePreview.className = 'resume';
+                resumePreview.classList.add(`template-${template}`);
+            }
+            
+            function printResume() {
+                window.print();
+            }
+            
+            function addDemoData() {
+                // Personal Info
+                fullNameInput.value = "Rachna Singh";
+                jobTitleInput.value = "Full Stack Web Developer";
+                emailInput.value = "rachna.singh@example.com";
+                phoneInput.value = "+91 98765 43210";
+                locationInput.value = "Bangalore, India";
+                summaryInput.value = "Passionate web developer with 5+ years of experience creating responsive and user-friendly websites and applications. Proficient in modern web technologies with a focus on clean code and performance optimization.";
+                updatePersonalInfo();
+                
+                // Work Experience
+                addWorkExperience({
+                    title: "Senior Web Developer",
+                    company: "Tech Solutions India",
+                    location: "Bangalore",
+                    start: "June 2020",
+                    end: "Present",
+                    description: "Lead development of e-commerce platforms, improved site performance by 40%, and mentored junior developers."
+                });
+                
+                addWorkExperience({
+                    title: "Web Developer",
+                    company: "Digital Creations",
+                    location: "Mumbai",
+                    start: "May 2018",
+                    end: "May 2020",
+                    description: "Designed and developed responsive websites for clients across various industries. Implemented SEO best practices."
+                });
+                
+                // Education
+                addEducation({
+                    degree: "Bachelor of Technology in Computer Science",
+                    institution: "Indian Institute of Technology",
+                    location: "Delhi",
+                    date: "2018",
+                    description: "Graduated with distinction. Notable projects included a music streaming app and an AI-powered chatbot."
+                });
+                
+                // Skills
+                const demoSkills = ["HTML5", "CSS3", "JavaScript", "React", "Node.js", "MongoDB", "TypeScript", "Responsive Design", "Git", "UI/UX"];
+                demoSkills.forEach(skill => {
+                    skillInput.value = skill;
+                    addSkill();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
